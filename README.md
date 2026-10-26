@@ -8,7 +8,7 @@ This is a collection of writeups for CTF challenges and stuff by me. If these he
 
 ## INDEX
 ## Easy
-[Billing](https://github.com/aliasdef/WtireUps/blob/main/Billing/README.md)
+[Billing](https://github.com/aliasdef/WtireUps/blob/main/ThyHackMe/Billing.md)
 
 
 ## Medium
