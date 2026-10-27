@@ -1,4 +1,4 @@
-# Soupedecode 01 — TryHackMe Writeup
+# Soupedecode 01- TryHackMe Writeup
 
 ## Machine Info
 
@@ -8,8 +8,6 @@
 | Difficulty | Easy                 |
 | OS         | Windows Server       |
 | Type       | Active Directory     |
-| Hostname   | DC01                 |
-| Domain     | SOUPEDECODE.LOCAL    |
 
 ---
 
@@ -70,7 +68,7 @@ Add the domain to `/etc/hosts`:
 echo "<IP> <DomainName>" | sudo tee -a /etc/hosts
 ```
 
-> **Note:** Kerberos relies on domain/hostnames rather than raw IPs — working by IP alone may fail.
+> **Note:** Kerberos relies on domain/hostnames rather than raw IPs - working by IP alone may fail.
 
 ---
 
@@ -91,7 +89,7 @@ sudo kerbrute userenum \
 ybob317@SOUPEDECODE.LOCAL
 ```
 
-**Screenshot 1** — kerbrute userenum result
+**Screenshot 1**- kerbrute userenum result
 
 > **Note:** finding a valid username ≠ having a password.
 
@@ -131,7 +129,7 @@ more user.txt
 **User flag:**
 
 ```
-28189316c25dd3c0ad56d44d000d62a8
+2******6********a*******0******8
 ```
 
 ---
@@ -157,7 +155,7 @@ GetUserSPNs.py -request soupedecode.local/ybob317 \
 
 Obtained a Kerberos TGS ticket hash (`$krb5tgs$...`).
 
-**Screenshot 2** — cracking the hash with John/Hashcat
+**Screenshot 2**- cracking the hash with John/Hashcat
 
 Cracking the hash with John/Hashcat gave:
 
@@ -178,7 +176,7 @@ crackmapexec smb <IP> \
   -d SOUPEDECODE.LOCAL
 ```
 
-**Screenshot 3** — crackmapexec result confirming the `file_svc` account
+**Screenshot 3**- crackmapexec result confirming the `file_svc` account
 
 The password matched the `file_svc` account, which has access to a `more_backup` share.
 
@@ -188,25 +186,15 @@ The password matched the `file_svc` account, which has access to a `more_backup`
 
 Connecting as `file_svc` granted access to the Administrator's files.
 
-**Screenshot 4** — accessing the backup share as `file_svc`
+**Screenshot 4**- accessing the backup share as `file_svc`
 
 The flag is located at `Administrator\Desktop\root.txt`.
 
 **Root flag:**
 
 ```
-27cb2be302c388d63d27c86bfdd5f56a
+2******3*******6********f******a
 ```
-
----
-
-## Takeaways
-
-- Active Directory has a lot of moving parts — a demanding but rewarding first attempt.
-- Knowing standard ports and the services behind them significantly speeds up recon.
-- Worth getting familiar with enum4linux, kerbrute, Impacket (`GetUserSPNs.py`), and crackmapexec/nxc ahead of time.
-- Using `\` to break long commands across lines in the terminal makes them much more readable.
-
 ---
 
 ### Attack Chain (summary)
